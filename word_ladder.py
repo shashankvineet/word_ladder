@@ -1,5 +1,7 @@
 #!/bin/python3
 
+from collections import deque
+from copy import deepcopy
 
 def word_ladder(start_word, end_word, dictionary_file='words5.dict'):
     '''
@@ -29,12 +31,47 @@ def word_ladder(start_word, end_word, dictionary_file='words5.dict'):
     the function returns `None`.
     '''
 
+    if start_word == end_word:
+        return start_word
+
+    # list = stack
+    wordStack = []                  # creating a stack
+    wordStack.append('start_word')  # pushing start word onto stack
+
+    #deques = queue
+    wordQ = deque()         # creating a queue
+    wordQ.append(wordStack) # enqueing stack onto queue
+
+
+    # readlines creates a list of strings
+    word_Dict = open (dictionary_file).readlines()
+    word_List = deepcopy(word_Dict)
+
+    while len(wordQ) > 0:                       # while the queue is not empty
+        wordQ.pop()                             # dequeu a stack from the queue 
+        for i in word_List:                     # for each word in the dictionary
+            if _adjacent(i,wordStack[-1]):      # if the word is adjacent to the top of the stack
+                if i == end_word:               # if this word is the end word
+                    wordStack.append(i)         # append your list which has the front word with this word
+                return workStack
+                copyStack = deepcopy(wordStack)
+                copyStack.append(i)
+                wordQ.append(copyStack)
+                word_List.remove(i)
+
 
 def verify_word_ladder(ladder):
     '''
     Returns True if each entry of the input list is adjacent to its neighbors;
     otherwise returns False.
     '''
+
+    if ladder == []:
+        return False
+    for word1,word2 in zip(ladder, ladder[1:]):
+        if not _adjacent(word1, word2):
+            return False
+    return True
 
 
 def _adjacent(word1, word2):
@@ -47,3 +84,14 @@ def _adjacent(word1, word2):
     >>> _adjacent('stone','money')
     False
     '''
+    
+    s = False
+
+    for i, j in zip(word1, word2):
+        if i != j:
+            if s:
+                return False
+            else:
+                s = True
+
+    return s 
