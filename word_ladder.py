@@ -50,7 +50,7 @@ def word_ladder(start_word, end_word, dictionary_file='words5.dict'):
     while len(wordQ) > 0:                       # while the queue is not empty
         wordQ.pop()                             # dequeu a stack from the queue 
         for i in word_List:                     # for each word in the dictionary
-            if _adjacent(i,wordStack[-1]):      # if the word is adjacent to the top of the stack
+            if _adjacent(i,wordStack[0]):      # if the word is adjacent to the top of the stack
                 if i == end_word:               # if this word is the end word
                     wordStack.append(i)         # append your list which has the front word with this word
                 return workStack
