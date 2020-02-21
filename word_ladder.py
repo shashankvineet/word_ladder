@@ -44,8 +44,8 @@ def word_ladder(start_word, end_word, dictionary_file='words5.dict'):
 
 
     # readlines creates a list of strings
-    word_Dict = open (dictionary_file).readlines()
-    word_List = deepcopy(word_Dict)
+    word_List = open (dictionary_file).readlines()
+    #word_List = deepcopy(word_Dict)
 
     while len(wordQ) > 0:                       # while the queue is not empty
         wordQ.pop()                             # dequeu a stack from the queue 
