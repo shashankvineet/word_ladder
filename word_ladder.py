@@ -37,22 +37,22 @@ def word_ladder(start_word, end_word, dictionary_file='words5.dict'):
     
     # readlines creates a list of strings
     word_Dict = open(dictionary_file)
-    word_List = word_Dict.readlines()
+    word_List = word_Dict.read().split("\n")
     
     # list = stack
     wordStack = []                  # creating a stack
-    wordStack.append(start_word)  # pushing start word onto stack
+    wordStack.append(start_word)    # pushing start word onto stack
 
     #deques = queue
     wordQ = deque()         # creating a queue
     wordQ.append(wordStack) # enqueing stack onto queue
 
-    while len(wordQ) > 0:                       # while the queue is not empty
-        q = wordQ.pop()                             # dequeu a stack from the queue 
-        for word in word_List:                     # for each word in the dictionary
-            if _adjacent(word,q[len(q)-1]):      # if the word is adjacent to the top of the stack
-                if word == end_word:               # if this word is the end word
-                    q.append(word)         # append your list which has the front word with this word
+    while len(wordQ) > 0:                                   # while the queue is not empty
+        q = wordQ.pop()                                     # dequeu a stack from the queue 
+        for word in word_List:                              # for each word in the dictionary
+            if _adjacent(word,q[len(q)-1]) is True:         # if the word is adjacent to the top of the stack
+                if word == end_word:                        # if this word is the end word
+                    q.append(word)                          # append your list which has the front word with this word
                 #return wordStack
                 copyStack = deepcopy(q)
                 copyStack.append(word)
@@ -68,13 +68,11 @@ def verify_word_ladder(ladder):
 
     if len(ladder) == 0:
         return False
-    i = 0
-    while i<len(ladder)-1:
-        if _adjacent(ladder[i], ladder[i+1]) == True:
-            i+1
-        else:
-            return False
-    return True
+    else:
+        for i in range(len(ladder)-1):
+            if _adjacent(ladder[i], ladder[i+1]) is False:
+                return False
+        return True
 
 
 def _adjacent(word1, word2):
