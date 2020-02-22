@@ -31,30 +31,30 @@ def word_ladder(start_word, end_word, dictionary_file='words5.dict'):
     the function returns `None`.
     '''
 
-   # if start_word == end_word:
-   #     return start_word
-
+    if start_word == end_word:
+        l = [start_word]
+        return l
+    
+    # readlines creates a list of strings
+    word_Dict = open(dictionary_file)
+    word_List = word_Dict.readlines()
+    
     # list = stack
     wordStack = []                  # creating a stack
-    wordStack.append('start_word')  # pushing start word onto stack
+    wordStack.append(start_word)  # pushing start word onto stack
 
     #deques = queue
     wordQ = deque()         # creating a queue
     wordQ.append(wordStack) # enqueing stack onto queue
 
-
-    # readlines creates a list of strings
-    word_Dict = open(dictionary_file)
-    word_List = word_Dict.readlines()
-
     while len(wordQ) > 0:                       # while the queue is not empty
-        wordQ.pop()                             # dequeu a stack from the queue 
+        q = wordQ.pop()                             # dequeu a stack from the queue 
         for word in word_List:                     # for each word in the dictionary
-            if _adjacent(word,wordStack[-1]):      # if the word is adjacent to the top of the stack
+            if _adjacent(word,q[len(q)-1]):      # if the word is adjacent to the top of the stack
                 if word == end_word:               # if this word is the end word
-                    wordStack.append(word)         # append your list which has the front word with this word
-                return wordStack
-                copyStack = deepcopy(wordStack)
+                    q.append(word)         # append your list which has the front word with this word
+                #return wordStack
+                copyStack = deepcopy(q)
                 copyStack.append(word)
                 wordQ.appendleft(copyStack)
                 word_List.pop(word)
