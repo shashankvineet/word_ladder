@@ -31,33 +31,38 @@ def word_ladder(start_word, end_word, dictionary_file='words5.dict'):
     the function returns `None`.
     '''
 
-    if start_word == end_word:
-        l = [start_word]
-        return l
     
     # readlines creates a list of strings
     word_Dict = open(dictionary_file)
-    word_List = word_Dict.read().split("\n")
+    global_word_List = word_Dict.read().split("\n")
     
     # list = stack
     wordStack = []                  # creating a stack
     wordStack.append(start_word)    # pushing start word onto stack
 
     #deques = queue
-    wordQ = deque()         # creating a queue
+    wordQ = deque([])         # creating a queue
     wordQ.append(wordStack) # enqueing stack onto queue
+    
+    if start_word == end_word:
+        print(wordStack)
+        return wordStack
 
-    while len(wordQ) > 0:                                   # while the queue is not empty
-        q = wordQ.pop()                                     # dequeu a stack from the queue 
-        for word in word_List:                              # for each word in the dictionary
-            if _adjacent(word,q[len(q)-1]) is True:         # if the word is adjacent to the top of the stack
-                if word == end_word:                        # if this word is the end word
-                    q.append(word)                          # append your list which has the front word with this word
-                #return wordStack
-                copyStack = deepcopy(q)
-                copyStack.append(word)
-                wordQ.appendleft(copyStack)
-                word_List.remove(word)
+    while wordQ:
+
+        q = wordQ.popleft()
+        word_List = [word for word in global_word_List if _adjacent(word, q[-1])]
+        
+        for word in word_List:
+            if word == end_word:
+                q.append(word)
+                return q
+            copyStack = deepcopy(q)
+            copyStack.append(word)
+            wordQ.append(copyStack)
+            global_word_List.remove(word)
+    
+    return None
 
 
 def verify_word_ladder(ladder):
@@ -66,11 +71,11 @@ def verify_word_ladder(ladder):
     otherwise returns False.
     '''
 
-    if ladder == []:
-        return None
+    if len(ladder) == 0:
+        return False
     else:
-        for i in range(len(ladder)-1):
-            if _adjacent(ladder[i], ladder[i+1]) is False:
+        for i in range(len(ladder)):
+            if i != len(ladder)-1 and not _adjacent(ladder[i], ladder[i+1]):
                 return False
         return True
 
