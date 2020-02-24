@@ -62,7 +62,7 @@ def word_ladder(start_word, end_word, dictionary_file='words5.dict'):
             wordQ.append(copyStack)
             global_word_List.remove(word)
     
-    return None
+    #return None
 
 
 def verify_word_ladder(ladder):
